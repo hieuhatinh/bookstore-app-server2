@@ -6,6 +6,7 @@ import * as dotenv from 'dotenv'
 import morgan from 'morgan'
 import bodyParser from 'body-parser'
 import api from './api/index.js'
+import connectDB from './database/index.js'
 
 dotenv.config()
 
@@ -30,6 +31,9 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 // parse application/json
 app.use(bodyParser.json())
+
+// database
+connectDB()
 
 // routes
 api(app)
