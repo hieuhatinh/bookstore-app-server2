@@ -5,6 +5,7 @@ import express from 'express'
 import * as dotenv from 'dotenv'
 import morgan from 'morgan'
 import bodyParser from 'body-parser'
+import api from './api/index.js'
 
 dotenv.config()
 
@@ -31,15 +32,11 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 // routes
-// routes(app)
+api(app)
 
 /**
  * Server Activation
  */
-
-app.get('/', (req, res) => {
-    res.send('Hello World!')
-})
 
 app.listen(PORT, () => {
     console.log(`Example app listening on PORT ${PORT}`)
