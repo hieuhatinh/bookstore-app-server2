@@ -28,26 +28,28 @@ const productSchema = new mongoose.Schema(
         seller: {
             type: mongoose.Schema.Types.ObjectId,
             required: true,
-            ref: 'sellers',
+            ref: 'users',
         },
-        type: {
-            type: String,
-            required: [true, 'Thể loại sách không được bỏ trống'],
-            enum: {
-                values: [
-                    'economy',
-                    'domestic_literature',
-                    'foreign_literature',
-                    'educational_psychology',
-                    'philosophy',
-                    'religion',
-                    'comic',
-                    'history_geography',
-                    'science',
-                ],
-                message: 'Chọn đúng thể loại sách',
+        type: [
+            {
+                type: String,
+                required: [true, 'Thể loại sách không được bỏ trống'],
+                enum: {
+                    values: [
+                        'economy',
+                        'domestic_literature',
+                        'foreign_literature',
+                        'educational_psychology',
+                        'philosophy',
+                        'religion',
+                        'comic',
+                        'history_geography',
+                        'science',
+                    ],
+                    message: 'Chọn đúng thể loại sách',
+                },
             },
-        },
+        ],
         reviews: [
             {
                 user: {

@@ -45,3 +45,17 @@ api(app)
 app.listen(PORT, () => {
     console.log(`Example app listening on PORT ${PORT}`)
 })
+
+// chỉnh sửa thông tin người dùng
+// chỉnh sửa thông tin product
+// tìm kiếm product
+
+// cart người dùng
+// thêm product vào giỏ hàng
+// xóa product khỏi giỏ hàng
+// chỉnh sửa số lượng mua sảm phẩm của người dùng
+
+// order
+// thêm sản phẩm vào hóa đơn
+// xóa sản phẩm khỏi hóa đơn
+// chỉnh sửa thông tin số điện thoại của người dùng
