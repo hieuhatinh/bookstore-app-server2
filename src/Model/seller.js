@@ -1,14 +1,14 @@
 import mongoose from 'mongoose'
 
-const userSchema = new mongoose.Schema({
+const sellerSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique: true,
     },
-    fullName: {
+    shopName: {
         type: String,
-        required: false,
+        required: true,
+        unique: true,
     },
     password: {
         type: String,
@@ -26,6 +26,6 @@ const userSchema = new mongoose.Schema({
     },
 })
 
-const UserModel = mongoose.model('users', userSchema)
+const SellerSchema = mongoose.model('sellers', sellerSchema)
 
-export default UserModel
+export default SellerSchema
