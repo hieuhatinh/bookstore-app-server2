@@ -1,6 +1,11 @@
 import HttpStatusCode from '../exception/HttpStatusCode.js'
 import { auth } from '../repositories/index.js'
 
+/**
+ * @description: đăng nhập
+ * @method post
+ * @route /auth/login
+ */
 const login = async (req, res) => {
     const { email, password, phoneNumber } = req.body
 
@@ -22,6 +27,11 @@ const login = async (req, res) => {
     }
 }
 
+/**
+ * @description: đăng ký
+ * @method post
+ * @route /auth/register
+ */
 const register = async (req, res) => {
     const { email, password, phoneNumber } = req.body
 

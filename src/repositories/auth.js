@@ -2,6 +2,11 @@ import UserModel from '../Model/User.js'
 import ErrorHandler from '../exception/ErrorHandler.js'
 import HttpStatusCode from '../exception/HttpStatusCode.js'
 
+/**
+ * @description: đăng nhập
+ * @method post
+ * @route /auth/login
+ */
 const login = async ({ email, password, phoneNumber }) => {
     const user = await UserModel.findOne({
         $or: [{ email: email }, { phoneNumber: phoneNumber }],
