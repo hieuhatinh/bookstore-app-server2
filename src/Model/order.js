@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-import { cartSchema } from './cart.js'
+import { cartSchema } from './Cart.js'
 
 const orderSchema = new mongoose.Schema({
     user: {

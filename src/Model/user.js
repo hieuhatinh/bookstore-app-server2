@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import bcrypt from 'bcrypt'
 
 const userSchema = new mongoose.Schema({
     email: {
@@ -17,6 +18,7 @@ const userSchema = new mongoose.Schema({
     phoneNumber: {
         type: String,
         required: true,
+        unique: true,
     },
     avatar: {
         url: {
@@ -24,7 +26,30 @@ const userSchema = new mongoose.Schema({
             required: false,
         },
     },
+    role: {
+        required: true,
+        type: String,
+        default: 'user',
+        enum: ['user', 'seller'],
+    },
 })
+
+// Encrypting password before saving user
+userSchema.pre('save', async function (next) {
+    if (!this.isModified('password')) {
+        next()
+    }
+
+    this.password = await bcrypt.hash(
+        this.password,
+        parseInt(process.env.SALT_ROUNDS),
+    )
+})
+
+// Compare user password
+userSchema.methods.comparePassword = async function (enteredPassword) {
+    return await bcrypt.compare(enteredPassword, this.password)
+}
 
 const UserModel = mongoose.model('users', userSchema)
 
