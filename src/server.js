@@ -50,12 +50,6 @@ app.listen(PORT, () => {
 // chỉnh sửa thông tin product
 // tìm kiếm product
 
-// cart người dùng
-// lấy ra tất cả sản phẩm đã được thêm vào giỏ hàngs
-// thêm product vào giỏ hàng
-// xóa product khỏi giỏ hàng
-// chỉnh sửa số lượng mua sảm phẩm của người dùng
-
 // order
 // thêm sản phẩm vào hóa đơn
 // xóa sản phẩm khỏi hóa đơn
