@@ -8,6 +8,7 @@ const orderSchema = new mongoose.Schema({
         required: true,
         ref: 'users',
     },
+    orderProducts: [cartSchema],
     shippingInfo: {
         address: {
             type: String,
@@ -18,7 +19,6 @@ const orderSchema = new mongoose.Schema({
             required: true,
         },
     },
-    orderProducts: [cartSchema],
     orderStatus: {
         type: String,
         required: true,
