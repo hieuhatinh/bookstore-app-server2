@@ -49,8 +49,9 @@ app.listen(PORT, () => {
 // chỉnh sửa thông tin người dùng
 // chỉnh sửa thông tin product
 // tìm kiếm product
+// đăng nhập bằng google, facebook
+// jwt
 
-// order
-// thêm sản phẩm vào hóa đơn
-// xóa sản phẩm khỏi hóa đơn
-// chỉnh sửa thông tin số điện thoại của người dùng
+// quyền của seller:
+// chỉnh sửa thông tin sản phẩm,
+// đăng bán sản phẩm
