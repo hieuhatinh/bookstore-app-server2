@@ -50,7 +50,6 @@ app.listen(PORT, () => {
 // chỉnh sửa thông tin product
 // tìm kiếm product
 // đăng nhập bằng google, facebook
-// jwt
 
 // quyền của seller:
 // chỉnh sửa thông tin sản phẩm,

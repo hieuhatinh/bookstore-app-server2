@@ -1,3 +1,5 @@
+import jwt from 'jsonwebtoken'
+
 import UserModel from '../Model/User.js'
 import ErrorHandler from '../exception/ErrorHandler.js'
 import HttpStatusCode from '../exception/HttpStatusCode.js'
@@ -28,8 +30,11 @@ const login = async ({ email, password, phoneNumber }) => {
         )
     }
 
+    const token = jwt.sign({ data: user }, process.env.SECRET_TOKEN, { expiresIn: '24h' })
+
     return {
         ...user._doc,
+        token,
         password: 'Not show',
     }
 }
