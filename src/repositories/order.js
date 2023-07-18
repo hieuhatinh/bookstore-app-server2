@@ -2,6 +2,11 @@ import OrderModel from '../Model/Order.js'
 import ErrorHandler from '../exception/ErrorHandler.js'
 import HttpStatusCode from '../exception/HttpStatusCode.js'
 
+/**
+ * @description: thêm sách vào hóa đơn
+ * @method post
+ * @route /order/add/:idUser
+ */
 const addProducts = async ({
     idUser,
     products,
@@ -42,6 +47,11 @@ const addProducts = async ({
     return { order }
 }
 
+/**
+ * @description: update thông tin của người dùng (sđt, địa chỉ giao hàng)
+ * @method patch
+ * @route /order/update/:idUser
+ */
 const updateProfileOrder = async ({
     idUser,
     address,

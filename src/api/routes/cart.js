@@ -5,7 +5,18 @@ import checkUserLogin from '../../middleware/checkUserLogin.js'
 
 const routerCart = express.Router()
 
+/**
+ * @description: lấy tất cả sách có trong giỏ hàng của 1 người dùng
+ * @method get
+ * @route /cart/:idUser
+ */
 routerCart.get('/:idUser', checkUserLogin, cartController.getAllBooksInCart)
+
+/**
+ * @description: thêm 1 quyển sách vào giỏ hàng của người dùng
+ * @method post
+ * @route /cart/addToCart/:idUser/:idProduct
+ */
 routerCart.post(
     '/addToCart/:idUser/:idProduct',
     checkUserLogin,
@@ -13,6 +24,12 @@ routerCart.post(
     checkProductExist,
     cartController.addToCart,
 )
+
+/**
+ * @description: xóa 1 sách ra khỏi giỏ hàng của người dùng
+ * @method delete
+ * @route /cart/deleteOne/:idUser/:idProduct
+ */
 routerCart.delete(
     '/deleteOne/:idUser/:idProduct',
     checkUserLogin,

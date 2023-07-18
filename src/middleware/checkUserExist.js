@@ -5,7 +5,10 @@ const checkUserExist = async (req, res, next) => {
     const existUser = await UserModel.findOne({ _id: idUser })
 
     if (!existUser) {
-        throw new ErrorHandler('User không tồn tại', HttpStatusCode.NOT_FOUND)
+        return res.status(HttpStatusCode.NOT_FOUND).json({
+            message: 'User không tồn tại',
+            statuscode: HttpStatusCode.NOT_FOUND
+        })
     }
 
     next()

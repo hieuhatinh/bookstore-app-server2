@@ -1,6 +1,11 @@
 import HttpStatusCode from '../exception/HttpStatusCode.js'
 import { orderRepositories } from '../repositories/index.js'
 
+/**
+ * @description: thêm sách vào hóa đơn
+ * @method post
+ * @route /order/add/:idUser
+ */
 const addProducts = async (req, res) => {
     const { idUser } = req.params
     const {
@@ -46,6 +51,11 @@ const addProducts = async (req, res) => {
     }
 }
 
+/**
+ * @description: update thông tin của người dùng (sđt, địa chỉ giao hàng)
+ * @method patch
+ * @route /order/update/:idUser
+ */
 const updateProfileOrder = async (req, res) => {
     const { idUser } = req.params
     const {

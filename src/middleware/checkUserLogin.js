@@ -6,8 +6,6 @@ function checkUserLogin(req, res, next) {
 
     try {
         const tokenVerify = jwt.verify(token, process.env.SECRET_TOKEN)
-        console.log(tokenVerify)
-        console.log(Date.now())
 
         const isExpired = tokenVerify.exp * 1000 < Date.now()
 
@@ -16,6 +14,10 @@ function checkUserLogin(req, res, next) {
                 message: 'Đã hết phiên đăng nhập',
                 statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR
             })
+        }
+
+        req.data = {
+            ...tokenVerify.data
         }
 
         next()

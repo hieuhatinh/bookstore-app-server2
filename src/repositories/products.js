@@ -39,7 +39,7 @@ const getDetailBook = async ({ idSeller, idProduct }) => {
  * @method get
  * @route /product/getAllBooksSeller/:idSeller
  */
-const getAllBooksSeller = async ({ idSeller }) => {
+const getAllBooksSeller = async ({ idSeller, _page }) => {
     _page = parseInt(_page) || 1
     let skip = (_page - 1) * SIZE_LIMIT
 

@@ -2,6 +2,11 @@ import CartModel from '../Model/Cart.js'
 import ErrorHandler from '../exception/ErrorHandler.js'
 import HttpStatusCode from '../exception/HttpStatusCode.js'
 
+/**
+ * @description: lấy tất cả sách có trong giỏ hàng của 1 người dùng
+ * @method get
+ * @route /cart/:idUser
+ */
 const getAllBooksInCart = async ({ idUser }) => {
     const cartUser = await CartModel.findOne({ user: idUser })
 
@@ -17,6 +22,11 @@ const getAllBooksInCart = async ({ idUser }) => {
     }
 }
 
+/**
+ * @description: thêm 1 quyển sách vào giỏ hàng của người dùng
+ * @method post
+ * @route /cart/addToCart/:idUser/:idProduct
+ */
 const addToCart = async ({ idProduct, idUser, quantity, price, name }) => {
     const cartUser = await CartModel.findOne({
         user: idUser,
@@ -73,6 +83,11 @@ const addToCart = async ({ idProduct, idUser, quantity, price, name }) => {
 
 }
 
+/**
+ * @description: xóa 1 sách ra khỏi giỏ hàng của người dùng
+ * @method delete
+ * @route /cart/deleteOne/:idUser/:idProduct
+ */
 const deleteToCart = async ({ idUser, idProduct }) => {
     const newProducts = await CartModel.updateOne(
         { user: idUser },

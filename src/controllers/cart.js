@@ -1,6 +1,11 @@
 import HttpStatusCode from '../exception/HttpStatusCode.js'
 import { cartRepositories } from '../repositories/index.js'
 
+/**
+ * @description: lấy tất cả sách có trong giỏ hàng của 1 người dùng
+ * @method get
+ * @route /cart/:idUser
+ */
 const getAllBooksInCart = async (req, res) => {
     const { idUser } = req.params
 
@@ -22,6 +27,11 @@ const getAllBooksInCart = async (req, res) => {
     }
 }
 
+/**
+ * @description: thêm 1 quyển sách vào giỏ hàng của người dùng
+ * @method post
+ * @route /cart/addToCart/:idUser/:idProduct
+ */
 const addToCart = async (req, res) => {
     const { idProduct, idUser } = req.params
     const { quantity, price, name } = req.query
@@ -44,6 +54,11 @@ const addToCart = async (req, res) => {
     }
 }
 
+/**
+ * @description: xóa 1 sách ra khỏi giỏ hàng của người dùng
+ * @method delete
+ * @route /cart/deleteOne/:idUser/:idProduct
+ */
 const deleteToCart = async (req, res) => {
     const { idUser, idProduct } = req.params
 

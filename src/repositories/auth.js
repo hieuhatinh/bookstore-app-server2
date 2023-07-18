@@ -39,6 +39,11 @@ const login = async ({ email, password, phoneNumber }) => {
     }
 }
 
+/**
+ * @description: đăng ký
+ * @method post
+ * @route /auth/register
+ */
 const register = async ({ email, password, phoneNumber }) => {
     const exisUser = await UserModel.count({
         $or: [{ email: email }, { phoneNumber: phoneNumber }],

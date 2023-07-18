@@ -1,6 +1,6 @@
 import express from 'express'
 import { productController } from '../../controllers/index.js'
-import { checkUserLogin } from '../../middleware/index.js'
+import { checkRole, checkUserLogin } from '../../middleware/index.js'
 
 const routerProduct = express.Router()
 
@@ -29,6 +29,7 @@ routerProduct.get(
 routerProduct.get(
     '/getAllBooksSeller/:idSeller',
     checkUserLogin,
+    checkRole,
     productController.getAllBooksSeller,
 )
 
@@ -47,7 +48,12 @@ routerProduct.get(
  * @method post
  * @route /product/all
  */
-routerProduct.post('/add', checkUserLogin, productController.bookForSale)
+routerProduct.post(
+    '/add',
+    checkUserLogin,
+    checkRole,
+    productController.bookForSale,
+)
 
 /**
  * @description: xóa sách, ngừng bán sản phẩm
@@ -57,6 +63,7 @@ routerProduct.post('/add', checkUserLogin, productController.bookForSale)
 routerProduct.delete(
     '/deleteBookSale/:idSeller/:idProduct',
     checkUserLogin,
+    checkRole,
     productController.deleteBookSale,
 )
 
