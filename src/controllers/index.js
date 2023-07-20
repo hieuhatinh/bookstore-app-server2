@@ -3,4 +3,9 @@ import productController from './products.js'
 import cartController from './cart.js'
 import orderController from './order.js'
 
-export { authController, productController, cartController, orderController }
+export {
+    authController,
+    productController,
+    cartController,
+    orderController,
+}

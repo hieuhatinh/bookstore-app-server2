@@ -1,5 +1,30 @@
 import mongoose from 'mongoose'
 
+export const imgSchema = new mongoose.Schema({
+    fieldname: {
+        type: String,
+    },
+    originalname: {
+        type: Buffer,
+    },
+    encoding: {
+        type: String,
+    },
+    mimetype: {
+        type: String,
+    },
+    path: {
+        type: String,
+        required: true,
+    },
+    size: {
+        type: Number,
+    },
+    filename: {
+        type: String,
+    }
+})
+
 const productSchema = new mongoose.Schema(
     {
         name: {
@@ -12,10 +37,7 @@ const productSchema = new mongoose.Schema(
             required: [true, 'Giá sách không được để trống'],
             default: 0.0,
         },
-        image: {
-            type: String,
-            required: [true, 'Không được để trống ảnh sách'],
-        },
+        images: [imgSchema],
         description: {
             type: String,
             required: false,

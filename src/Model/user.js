@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
+import { imgSchema } from './Product.js'
 
 const userSchema = new mongoose.Schema({
     email: {
@@ -20,12 +21,7 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-    avatar: {
-        url: {
-            type: String,
-            required: false,
-        },
-    },
+    avatar: imgSchema,
     role: {
         required: false,
         type: String,

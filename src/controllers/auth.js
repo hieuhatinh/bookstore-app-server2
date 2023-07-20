@@ -53,7 +53,36 @@ const register = async (req, res) => {
     }
 }
 
+/**
+ * @description: update thông tin người dùng
+ * @method patch
+ * @route /auth/update
+ */
+const updateProfile = async (req, res) => {
+    const userId = req.data._id
+    const { fullName, password } = req.body
+    const avatar = req.file
+
+    try {
+        const result = await auth.updateProfile({ userId, fullName, password, avatar })
+
+        return res.status(HttpStatusCode.OK).json({
+            data: result,
+            message: 'Chỉnh sửa thông tin thành công',
+            statusCode: HttpStatusCode.OK,
+        })
+    } catch (error) {
+        return res
+            .status(error.statusCode || HttpStatusCode.INTERNAL_SERVER_ERROR)
+            .json({
+                message: error.message,
+                statusCode: error.statusCode,
+            })
+    }
+}
+
 export default {
     login,
     register,
+    updateProfile
 }

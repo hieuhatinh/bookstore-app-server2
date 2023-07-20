@@ -1,6 +1,6 @@
 import express from 'express'
 import { productController } from '../../controllers/index.js'
-import { checkRole, checkUserLogin } from '../../middleware/index.js'
+import { checkRole, checkUserLogin, uploadCloud } from '../../middleware/index.js'
 
 const routerProduct = express.Router()
 
@@ -22,6 +22,16 @@ routerProduct.get(
 )
 
 /**
+ * @description: lấy sách theo thể loại
+ * @method get
+ * @route /product/getProductsByType/:type
+ */
+routerProduct.get(
+    '/getProductsByType/:type',
+    productController.getProductsByType,
+)
+
+/**
  * @description: lấy tất cả những quyển sách mà người bán đang bán
  * @method get
  * @route /product/getAllBooksSeller/:idSeller
@@ -34,25 +44,29 @@ routerProduct.get(
 )
 
 /**
- * @description: lấy sách theo thể loại
- * @method get
- * @route /product/getProductsByType/:type
- */
-routerProduct.get(
-    '/getProductsByType/:type',
-    productController.getProductsByType,
-)
-
-/**
  * @description: người bán đăng bán sách
  * @method post
- * @route /product/all
+ * @route /product/add
  */
 routerProduct.post(
     '/add',
     checkUserLogin,
     checkRole,
+    uploadCloud.array('files'),
     productController.bookForSale,
+)
+
+/**
+ * @description: người bán chỉnh sửa thông tin về sách
+ * @method patch
+ * @route /product/update/:idProduct
+ */
+routerProduct.patch(
+    '/update/:idProduct',
+    checkUserLogin,
+    checkRole,
+    uploadCloud.array('files'),
+    productController.updateProfileProduct,
 )
 
 /**

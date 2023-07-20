@@ -30,7 +30,9 @@ const login = async ({ email, password, phoneNumber }) => {
         )
     }
 
-    const token = jwt.sign({ data: user }, process.env.SECRET_TOKEN, { expiresIn: '24h' })
+    const token = jwt.sign({ data: user }, process.env.SECRET_TOKEN, {
+        expiresIn: '24h',
+    })
 
     return {
         ...user._doc,
@@ -65,7 +67,30 @@ const register = async ({ email, password, phoneNumber }) => {
     }
 }
 
+/**
+ * @description: update thông tin người dùng
+ * @method patch
+ * @route /auth/update
+ */
+const updateProfile = async ({ userId, fullName, password, avatar }) => {
+    const user = await UserModel.findOne({ _id: userId })
+
+    user.password = password
+
+    user.save()
+
+    const result = await UserModel.updateOne({
+        _id: userId,
+    }, {
+        fullName,
+        avatar
+    })
+
+    return result
+}
+
 export default {
     login,
     register,
+    updateProfile,
 }

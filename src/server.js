@@ -46,7 +46,5 @@ app.listen(PORT, () => {
     console.log(`Example app listening on PORT ${PORT}`)
 })
 
-// chỉnh sửa thông tin người dùng
-// chỉnh sửa thông tin product
 // tìm kiếm product
 // đăng nhập bằng google, facebook

@@ -84,12 +84,12 @@ const getProductsByType = async ({ type, _page }) => {
 /**
  * @description: người bán đăng bán sách
  * @method post
- * @route /product/all
+ * @route /product/add
  */
 const bookForSale = async ({
     name,
     price,
-    image,
+    images,
     description,
     author,
     seller,
@@ -107,7 +107,7 @@ const bookForSale = async ({
     const newBook = await ProductModel.create({
         name,
         price,
-        image,
+        images,
         description,
         author,
         seller,
@@ -119,6 +119,42 @@ const bookForSale = async ({
         ...newBook._doc,
         ...newBook._id,
     }
+}
+
+/**
+ * @description: người bán chỉnh sửa thông tin về sách
+ * @method patch
+ * @route /product/update/:idProduct
+ */
+const updateProfileProduct = async ({
+    idProduct,
+    userId,
+    name,
+    price,
+    images,
+    description,
+    author,
+    seller,
+    type,
+    reviews,
+}) => {
+    const product = await ProductModel.updateMany({
+        $and: [
+            { seller: userId },
+            { _id: idProduct }
+        ]
+    }, {
+        name,
+        price,
+        images,
+        description,
+        author,
+        seller,
+        type,
+        reviews,
+    })
+
+    return { product }
 }
 
 /**
@@ -152,6 +188,7 @@ export default {
     bookForSale,
     getAllBooksSeller,
     getProductsByType,
+    updateProfileProduct,
     deleteBookSale,
     getAllBook,
 }
