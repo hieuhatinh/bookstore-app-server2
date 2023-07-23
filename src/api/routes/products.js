@@ -44,6 +44,13 @@ routerProduct.get(
 )
 
 /**
+ * @description: tìm kiếm sách theo tên sách, tên tác giả
+ * @method get
+ * @route /product/search
+ */
+routerProduct.post('/search', productController.searchBook)
+
+/**
  * @description: người bán đăng bán sách
  * @method post
  * @route /product/add

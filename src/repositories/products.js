@@ -82,6 +82,41 @@ const getProductsByType = async ({ type, _page }) => {
 }
 
 /**
+ * @description: tìm kiếm sách theo tên sách, tên tác giả
+ * @method get
+ * @route /product/search
+ */
+const searchBook = async ({ searchString, _page }) => {
+    _page = parseInt(_page) || 1
+    let skip = (_page - 1) * SIZE_LIMIT
+
+    const result = await ProductModel.aggregate([
+        {
+            $match: {
+                $or: [
+                    {
+                        name: {
+                            $regex: `.*${searchString}.*`,
+                            $options: 'i', // ignore case
+                        },
+                    },
+                    {
+                        author: {
+                            $regex: `.*${searchString}.*`,
+                            $options: 'i', // ignore case
+                        },
+                    },
+                ],
+            },
+        },
+    ])
+        .skip(skip)
+        .limit(SIZE_LIMIT)
+
+    return result
+}
+
+/**
  * @description: người bán đăng bán sách
  * @method post
  * @route /product/add
@@ -138,21 +173,21 @@ const updateProfileProduct = async ({
     type,
     reviews,
 }) => {
-    const product = await ProductModel.updateMany({
-        $and: [
-            { seller: userId },
-            { _id: idProduct }
-        ]
-    }, {
-        name,
-        price,
-        images,
-        description,
-        author,
-        seller,
-        type,
-        reviews,
-    })
+    const product = await ProductModel.updateMany(
+        {
+            $and: [{ seller: userId }, { _id: idProduct }],
+        },
+        {
+            name,
+            price,
+            images,
+            description,
+            author,
+            seller,
+            type,
+            reviews,
+        },
+    )
 
     return { product }
 }
@@ -188,6 +223,7 @@ export default {
     bookForSale,
     getAllBooksSeller,
     getProductsByType,
+    searchBook,
     updateProfileProduct,
     deleteBookSale,
     getAllBook,

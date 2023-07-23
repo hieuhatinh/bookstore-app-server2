@@ -120,6 +120,32 @@ const getAllBooksSeller = async (req, res) => {
 }
 
 /**
+ * @description: tìm kiếm sách theo tên sách, tên tác giả
+ * @method get
+ * @route /product/search
+ */
+const searchBook = async (req, res) => {
+    const { searchString, _page } = req.query
+
+    try {
+        const searchResult = await productRepositories.searchBook({ searchString, _page })
+
+        return res.status(HttpStatusCode.OK).json({
+            data: searchResult,
+            message: 'Tìm kiếm thành công',
+            statusCode: HttpStatusCode.OK,
+        })
+    } catch (error) {
+        return res
+            .status(error.statusCode || HttpStatusCode.INTERNAL_SERVER_ERROR)
+            .json({
+                message: error.message || 'Có lỗi xảy ra',
+                statusCode: error.statusCode,
+            })
+    }
+}
+
+/**
  * @description: người bán đăng bán sách
  * @method post
  * @route /product/add
@@ -233,6 +259,7 @@ export default {
     bookForSale,
     getAllBooksSeller,
     getProductsByType,
+    searchBook,
     updateProfileProduct,
     deleteBookSale,
     getAllBook,
