@@ -30,7 +30,7 @@ const login = async ({ email, password, phoneNumber }) => {
         )
     }
 
-    const token = jwt.sign({ data: user }, process.env.SECRET_TOKEN, {
+    const token = jwt.sign({ id: user._id, email: user.email, role: user.role }, process.env.SECRET_TOKEN, {
         expiresIn: '24h',
     })
 
@@ -89,8 +89,28 @@ const updateProfile = async ({ userId, fullName, password, avatar }) => {
     return result
 }
 
+/**
+ * @description: lấy thông tin người bán
+ * @method get
+ * @route /auth/:idSeller
+ */
+const getProfileSeller = async ({ idSeller }) => {
+    const sellerProfile = await UserModel.findOne({ _id: idSeller })
+
+    console.log(sellerProfile)
+    if (!sellerProfile || sellerProfile.role.trim().toLowerCase() !== 'seller') {
+        throw new ErrorHandler(
+            'Không tồn tại nhà cung cấp này',
+            HttpStatusCode.NOT_FOUND,
+        )
+    }
+
+    return sellerProfile
+}
+
 export default {
     login,
     register,
     updateProfile,
+    getProfileSeller
 }

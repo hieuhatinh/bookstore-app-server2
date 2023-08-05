@@ -126,6 +126,7 @@ const getAllBooksSeller = async (req, res) => {
  */
 const searchBook = async (req, res) => {
     const { searchString, _page } = req.query
+    console.log(searchString)
 
     try {
         const searchResult = await productRepositories.searchBook({ searchString, _page })

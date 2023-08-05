@@ -19,7 +19,6 @@ const login = async (req, res) => {
         })
     } catch (error) {
         return res
-            .status(error.statusCode || HttpStatusCode.INTERNAL_SERVER_ERROR)
             .json({
                 message: error.message,
                 statusCode: error.statusCode,
@@ -45,7 +44,6 @@ const register = async (req, res) => {
         })
     } catch (error) {
         return res
-            .status(error.statusCode || HttpStatusCode.INTERNAL_SERVER_ERROR)
             .json({
                 message: error.message,
                 statusCode: error.statusCode,
@@ -73,7 +71,31 @@ const updateProfile = async (req, res) => {
         })
     } catch (error) {
         return res
-            .status(error.statusCode || HttpStatusCode.INTERNAL_SERVER_ERROR)
+            .json({
+                message: error.message,
+                statusCode: error.statusCode,
+            })
+    }
+}
+
+/**
+ * @description: lấy thông tin người bán
+ * @method get
+ * @route /auth/:idSeller
+ */
+const getProfileSeller = async (req, res) => {
+    const { idSeller } = req.params
+
+    try {
+        const result = await auth.getProfileSeller({ idSeller })
+
+        return res.status(HttpStatusCode.OK).json({
+            data: result,
+            message: 'lấy thông tin thành công',
+            statusCode: HttpStatusCode.OK,
+        })
+    } catch (error) {
+        return res
             .json({
                 message: error.message,
                 statusCode: error.statusCode,
@@ -84,5 +106,6 @@ const updateProfile = async (req, res) => {
 export default {
     login,
     register,
-    updateProfile
+    updateProfile,
+    getProfileSeller
 }
