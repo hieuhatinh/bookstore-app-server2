@@ -52,7 +52,7 @@ const productSchema = new mongoose.Schema(
             required: true,
             ref: 'users',
         },
-        type: [
+        category: [
             {
                 type: String,
                 required: [true, 'Thể loại sách không được bỏ trống'],

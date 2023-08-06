@@ -22,9 +22,9 @@ const getAllBook = async ({ _page }) => {
  * @method get
  * @route /product/getDetail/:idSeller/:idProduct
  */
-const getDetailBook = async ({ idSeller, idProduct }) => {
+const getDetailBook = async ({ idProduct }) => {
     const book = await ProductModel.findOne({
-        $and: [{ seller: idSeller }, { _id: idProduct }],
+        _id: idProduct,
     }).exec()
 
     if (!book) {
@@ -65,13 +65,13 @@ const getAllBooksSeller = async ({ idSeller, _page }) => {
 /**
  * @description: lấy sách theo thể loại
  * @method get
- * @route /product/getProductsByType/:type
+ * @route /product/getProductsByType/:category
  */
-const getProductsByType = async ({ type, _page }) => {
+const getProductsByType = async ({ category, _page }) => {
     _page = parseInt(_page) || 1
     let skip = (_page - 1) * SIZE_LIMIT
 
-    const booksByType = await ProductModel.find({ type: type })
+    const booksByType = await ProductModel.find({ category: category })
         .skip(skip)
         .limit(SIZE_LIMIT)
         .exec()
@@ -128,7 +128,7 @@ const bookForSale = async ({
     description,
     author,
     seller,
-    type,
+    category,
     reviews,
 }) => {
     const existBook = await ProductModel.find({
@@ -146,7 +146,7 @@ const bookForSale = async ({
         description,
         author,
         seller,
-        type,
+        category,
         reviews,
     })
 
@@ -170,7 +170,7 @@ const updateProfileProduct = async ({
     description,
     author,
     seller,
-    type,
+    category,
     reviews,
 }) => {
     const product = await ProductModel.updateMany(
@@ -184,7 +184,7 @@ const updateProfileProduct = async ({
             description,
             author,
             seller,
-            type,
+            category,
             reviews,
         },
     )

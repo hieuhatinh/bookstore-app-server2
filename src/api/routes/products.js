@@ -14,20 +14,20 @@ routerProduct.get('/all', productController.getAllBook)
 /**
  * @description: lấy thông tin chi tiết 1 quyển sách
  * @method get
- * @route /product/getDetail/:idSeller/:idProduct
+ * @route /product/getDetail/:idProduct
  */
 routerProduct.get(
-    '/getDetail/:idSeller/:idProduct',
+    '/getDetail/:idProduct',
     productController.getDetailBook,
 )
 
 /**
  * @description: lấy sách theo thể loại
  * @method get
- * @route /product/getProductsByType/:type
+ * @route /product/getProductsByType/:category
  */
 routerProduct.get(
-    '/getProductsByType/:type',
+    '/getProductsByType/:category',
     productController.getProductsByType,
 )
 

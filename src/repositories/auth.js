@@ -97,7 +97,6 @@ const updateProfile = async ({ userId, fullName, password, avatar }) => {
 const getProfileSeller = async ({ idSeller }) => {
     const sellerProfile = await UserModel.findOne({ _id: idSeller })
 
-    console.log(sellerProfile)
     if (!sellerProfile || sellerProfile.role.trim().toLowerCase() !== 'seller') {
         throw new ErrorHandler(
             'Không tồn tại nhà cung cấp này',
@@ -105,7 +104,10 @@ const getProfileSeller = async ({ idSeller }) => {
         )
     }
 
-    return sellerProfile
+    return {
+        ...sellerProfile._doc,
+        password: 'Not show'
+    }
 }
 
 export default {

@@ -30,14 +30,13 @@ const getAllBook = async (req, res) => {
 /**
  * @description: lấy thông tin chi tiết 1 quyển sách
  * @method get
- * @route /product/getDetail/:idSeller/:idProduct
+ * @route /product/getDetail/:idProduct
  */
 const getDetailBook = async (req, res) => {
-    const { idSeller, idProduct } = req.params
+    const { idProduct } = req.params
 
     try {
         const book = await productRepositories.getDetailBook({
-            idSeller,
             idProduct,
         })
 
@@ -59,15 +58,15 @@ const getDetailBook = async (req, res) => {
 /**
  * @description: lấy sách theo thể loại
  * @method get
- * @route /product/getProductsByType/:type
+ * @route /product/getProductsByType/:category
  */
 const getProductsByType = async (req, res) => {
-    const { type } = req.params
+    const { category } = req.params
     const { _page } = req.query
 
     try {
         const result = await productRepositories.getProductsByType({
-            type,
+            category,
             _page,
         })
 
@@ -126,7 +125,6 @@ const getAllBooksSeller = async (req, res) => {
  */
 const searchBook = async (req, res) => {
     const { searchString, _page } = req.query
-    console.log(searchString)
 
     try {
         const searchResult = await productRepositories.searchBook({ searchString, _page })
@@ -152,7 +150,7 @@ const searchBook = async (req, res) => {
  * @route /product/add
  */
 const bookForSale = async (req, res) => {
-    const { name, price, description, author, type, reviews } =
+    const { name, price, description, author, category, reviews } =
         req.body
 
     const seller = req.data._id
@@ -166,7 +164,7 @@ const bookForSale = async (req, res) => {
             description,
             author,
             seller,
-            type,
+            category,
             reviews,
         })
 
@@ -193,7 +191,7 @@ const bookForSale = async (req, res) => {
 const updateProfileProduct = async (req, res) => {
     const { idProduct } = req.params
     const userId = req.data._id
-    const { name, price, description, author, seller, type, reviews } =
+    const { name, price, description, author, seller, category, reviews } =
         req.body
     const images = req.files
 
@@ -207,7 +205,7 @@ const updateProfileProduct = async (req, res) => {
             description,
             author,
             seller,
-            type,
+            category,
             reviews,
         })
 
