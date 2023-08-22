@@ -18,11 +18,10 @@ const login = async (req, res) => {
             statusCode: HttpStatusCode.OK,
         })
     } catch (error) {
-        return res
-            .json({
-                message: error.message,
-                statusCode: error.statusCode,
-            })
+        return res.json({
+            message: error.message,
+            statusCode: error.statusCode,
+        })
     }
 }
 
@@ -43,11 +42,10 @@ const register = async (req, res) => {
             statusCode: HttpStatusCode.OK,
         })
     } catch (error) {
-        return res
-            .json({
-                message: error.message,
-                statusCode: error.statusCode,
-            })
+        return res.json({
+            message: error.message,
+            statusCode: error.statusCode,
+        })
     }
 }
 
@@ -62,7 +60,12 @@ const updateProfile = async (req, res) => {
     const avatar = req.file
 
     try {
-        const result = await auth.updateProfile({ userId, fullName, password, avatar })
+        const result = await auth.updateProfile({
+            userId,
+            fullName,
+            password,
+            avatar,
+        })
 
         return res.status(HttpStatusCode.OK).json({
             data: result,
@@ -70,11 +73,10 @@ const updateProfile = async (req, res) => {
             statusCode: HttpStatusCode.OK,
         })
     } catch (error) {
-        return res
-            .json({
-                message: error.message,
-                statusCode: error.statusCode,
-            })
+        return res.json({
+            message: error.message,
+            statusCode: error.statusCode,
+        })
     }
 }
 
@@ -95,11 +97,10 @@ const getProfileSeller = async (req, res) => {
             statusCode: HttpStatusCode.OK,
         })
     } catch (error) {
-        return res
-            .json({
-                message: error.message,
-                statusCode: error.statusCode,
-            })
+        return res.json({
+            message: error.message,
+            statusCode: error.statusCode,
+        })
     }
 }
 
@@ -107,5 +108,5 @@ export default {
     login,
     register,
     updateProfile,
-    getProfileSeller
+    getProfileSeller,
 }

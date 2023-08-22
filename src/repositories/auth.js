@@ -30,9 +30,13 @@ const login = async ({ email, password, phoneNumber }) => {
         )
     }
 
-    const token = jwt.sign({ id: user._id, email: user.email, role: user.role }, process.env.SECRET_TOKEN, {
-        expiresIn: '24h',
-    })
+    const token = jwt.sign(
+        { id: user._id, email: user.email, role: user.role },
+        process.env.SECRET_TOKEN,
+        {
+            expiresIn: '24h',
+        },
+    )
 
     return {
         ...user._doc,
@@ -51,8 +55,17 @@ const register = async ({ email, password, phoneNumber }) => {
         $or: [{ email: email }, { phoneNumber: phoneNumber }],
     })
 
+    const user = await UserModel.findOne({
+        $or: [{ email: email }, { phoneNumber: phoneNumber }],
+    })
+
+    console.log(user)
+
     if (exisUser > 0) {
-        throw new ErrorHandler('Tài khoản đã tồn tại', 409)
+        throw new ErrorHandler(
+            'Tài khoản đã tồn tại || số điện thoại đã tồn tại',
+            409,
+        )
     }
 
     const newUser = await UserModel.create({
@@ -79,12 +92,15 @@ const updateProfile = async ({ userId, fullName, password, avatar }) => {
 
     user.save()
 
-    const result = await UserModel.updateOne({
-        _id: userId,
-    }, {
-        fullName,
-        avatar
-    })
+    const result = await UserModel.updateOne(
+        {
+            _id: userId,
+        },
+        {
+            fullName,
+            avatar,
+        },
+    )
 
     return result
 }
@@ -97,7 +113,10 @@ const updateProfile = async ({ userId, fullName, password, avatar }) => {
 const getProfileSeller = async ({ idSeller }) => {
     const sellerProfile = await UserModel.findOne({ _id: idSeller })
 
-    if (!sellerProfile || sellerProfile.role.trim().toLowerCase() !== 'seller') {
+    if (
+        !sellerProfile ||
+        sellerProfile.role.trim().toLowerCase() !== 'seller'
+    ) {
         throw new ErrorHandler(
             'Không tồn tại nhà cung cấp này',
             HttpStatusCode.NOT_FOUND,
@@ -106,7 +125,7 @@ const getProfileSeller = async ({ idSeller }) => {
 
     return {
         ...sellerProfile._doc,
-        password: 'Not show'
+        password: 'Not show',
     }
 }
 
@@ -114,5 +133,5 @@ export default {
     login,
     register,
     updateProfile,
-    getProfileSeller
+    getProfileSeller,
 }

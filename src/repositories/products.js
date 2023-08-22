@@ -14,13 +14,13 @@ const getAllBook = async ({ _page }) => {
     let skip = (_page - 1) * SIZE_LIMIT
     const books = await ProductModel.find().skip(skip).limit(SIZE_LIMIT)
 
-    return { books }
+    return books
 }
 
 /**
  * @description: lấy thông tin chi tiết 1 quyển sách
  * @method get
- * @route /product/getDetail/:idSeller/:idProduct
+ * @route /product/getDetail/:idProduct
  */
 const getDetailBook = async ({ idProduct }) => {
     const book = await ProductModel.findOne({
@@ -31,7 +31,7 @@ const getDetailBook = async ({ idProduct }) => {
         throw new ErrorHandler('Không tìm thấy sách', HttpStatusCode.NOT_FOUND)
     }
 
-    return { book }
+    return book
 }
 
 /**
@@ -76,9 +76,7 @@ const getProductsByType = async ({ category, _page }) => {
         .limit(SIZE_LIMIT)
         .exec()
 
-    return {
-        booksByType,
-    }
+    return booksByType
 }
 
 /**
