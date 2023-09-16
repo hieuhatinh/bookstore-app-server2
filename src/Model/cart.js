@@ -19,14 +19,6 @@ export const cartSchema = new mongoose.Schema(
                     required: true,
                     default: 1,
                 },
-                price: {
-                    type: Number,
-                    required: true,
-                },
-                name: {
-                    type: String,
-                    required: true,
-                },
             },
         ],
     },

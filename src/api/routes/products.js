@@ -1,6 +1,10 @@
 import express from 'express'
 import { productController } from '../../controllers/index.js'
-import { checkRole, checkUserLogin, uploadCloud } from '../../middleware/index.js'
+import {
+    checkRole,
+    checkUserLogin,
+    uploadCloud,
+} from '../../middleware/index.js'
 
 const routerProduct = express.Router()
 
@@ -16,10 +20,7 @@ routerProduct.get('/all', productController.getAllBook)
  * @method get
  * @route /product/getDetail/:idProduct
  */
-routerProduct.get(
-    '/getDetail/:idProduct',
-    productController.getDetailBook,
-)
+routerProduct.get('/getDetail/:idProduct', productController.getDetailBook)
 
 /**
  * @description: lấy sách theo thể loại
@@ -34,10 +35,10 @@ routerProduct.get(
 /**
  * @description: lấy tất cả những quyển sách mà người bán đang bán
  * @method get
- * @route /product/getAllBooksSeller/:idSeller
+ * @route /product/getAllBooksSeller
  */
 routerProduct.get(
-    '/getAllBooksSeller/:idSeller',
+    '/getAllBooksSeller',
     checkUserLogin,
     checkRole,
     productController.getAllBooksSeller,
@@ -79,10 +80,10 @@ routerProduct.patch(
 /**
  * @description: xóa sách, ngừng bán sản phẩm
  * @method delete
- * @route /product/deleteBookSale/:idSeller/:idProduct
+ * @route /product/deleteBookSale/:idProduct
  */
 routerProduct.delete(
-    '/deleteBookSale/:idSeller/:idProduct',
+    '/deleteBookSale/:idProduct',
     checkUserLogin,
     checkRole,
     productController.deleteBookSale,

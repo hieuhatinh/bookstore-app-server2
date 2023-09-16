@@ -8,17 +8,21 @@ const routerCart = express.Router()
 /**
  * @description: lấy tất cả sách có trong giỏ hàng của 1 người dùng
  * @method get
- * @route /cart/:idUser
+ * @route /cart/getAllInCarts
  */
-routerCart.get('/:idUser', checkUserLogin, cartController.getAllBooksInCart)
+routerCart.get(
+    '/getAllInCarts',
+    checkUserLogin,
+    cartController.getAllBooksInCart,
+)
 
 /**
  * @description: thêm 1 quyển sách vào giỏ hàng của người dùng
  * @method post
- * @route /cart/addToCart/:idUser/:idProduct
+ * @route /cart/addToCart/:idProduct
  */
 routerCart.post(
-    '/addToCart/:idUser/:idProduct',
+    '/addToCart/:idProduct',
     checkUserLogin,
     checkUserExist,
     checkProductExist,
@@ -28,14 +32,26 @@ routerCart.post(
 /**
  * @description: xóa 1 sách ra khỏi giỏ hàng của người dùng
  * @method delete
- * @route /cart/deleteOne/:idUser/:idProduct
+ * @route /cart/deleteOne/:idProduct
  */
 routerCart.delete(
-    '/deleteOne/:idUser/:idProduct',
+    '/deleteOne/:idProduct',
     checkUserLogin,
     checkUserExist,
     checkProductExist,
     cartController.deleteToCart,
 )
 
+/**
+ * @description: thay đổi số lượng của 1 sản phẩm
+ * @method patch
+ * @route /cart/updateOne/:idProduct
+ */
+routerCart.delete(
+    '/updateOne/:idProduct',
+    checkUserLogin,
+    checkUserExist,
+    checkProductExist,
+    cartController.updateQuantitiesProduct,
+)
 export default routerCart

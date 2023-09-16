@@ -8,10 +8,10 @@ const routerOrder = express.Router()
 /**
  * @description: thêm sách vào hóa đơn
  * @method post
- * @route /order/add/:idUser
+ * @route /order/add
  */
 routerOrder.post(
-    '/add/:idUser',
+    '/add',
     checkUserLogin,
     checkUserExist,
     orderController.addProducts,
@@ -20,10 +20,10 @@ routerOrder.post(
 /**
  * @description: update thông tin của người dùng (sđt, địa chỉ giao hàng)
  * @method patch
- * @route /order/update/:idUser
+ * @route /order/update
  */
 routerOrder.patch(
-    '/update/:idUser',
+    '/update',
     checkUserLogin,
     checkUserExist,
     orderController.updateProfileOrder,

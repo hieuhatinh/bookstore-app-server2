@@ -4,10 +4,10 @@ import { cartRepositories } from '../repositories/index.js'
 /**
  * @description: lấy tất cả sách có trong giỏ hàng của 1 người dùng
  * @method get
- * @route /cart/:idUser
+ * @route /cart/getAllInCarts
  */
 const getAllBooksInCart = async (req, res) => {
-    const { idUser } = req.params
+    const idUser = req.data.id
 
     try {
         const result = await cartRepositories.getAllBooksInCart({ idUser })
@@ -15,7 +15,7 @@ const getAllBooksInCart = async (req, res) => {
         return res.status(HttpStatusCode.OK).json({
             data: result,
             message: 'Lấy thành công các sản phẩm trong giỏ hàng',
-            statusCode: HttpStatusCode.OK
+            statusCode: HttpStatusCode.OK,
         })
     } catch (error) {
         return res
@@ -30,14 +30,19 @@ const getAllBooksInCart = async (req, res) => {
 /**
  * @description: thêm 1 quyển sách vào giỏ hàng của người dùng
  * @method post
- * @route /cart/addToCart/:idUser/:idProduct
+ * @route /cart/addToCart/:idProduct
  */
 const addToCart = async (req, res) => {
-    const { idProduct, idUser } = req.params
-    const { quantity, price, name } = req.query
+    const idUser = req.data.id
+    const { idProduct } = req.params
+    const { quantity } = req.query
 
     try {
-        const result = await cartRepositories.addToCart({ idProduct, idUser, quantity, price, name })
+        const result = await cartRepositories.addToCart({
+            idProduct,
+            idUser,
+            quantity,
+        })
 
         return res.status(HttpStatusCode.INSERT_OK).json({
             data: result,
@@ -57,13 +62,17 @@ const addToCart = async (req, res) => {
 /**
  * @description: xóa 1 sách ra khỏi giỏ hàng của người dùng
  * @method delete
- * @route /cart/deleteOne/:idUser/:idProduct
+ * @route /cart/deleteOne/:idProduct
  */
 const deleteToCart = async (req, res) => {
-    const { idUser, idProduct } = req.params
+    const idUser = req.data.id
+    const { idProduct } = req.params
 
     try {
-        const result = await cartRepositories.deleteToCart({ idUser, idProduct })
+        const result = await cartRepositories.deleteToCart({
+            idUser,
+            idProduct,
+        })
 
         return res.status(HttpStatusCode.OK).json({
             data: result,
@@ -80,8 +89,41 @@ const deleteToCart = async (req, res) => {
     }
 }
 
+/**
+ * @description: thay đổi số lượng của 1 sản phẩm
+ * @method patch
+ * @route /cart/updateOne/:idProduct
+ */
+const updateQuantitiesProduct = async (req, res) => {
+    const idUser = req.data.id
+    const { idProduct } = req.params
+    const { quantity } = req.query
+
+    try {
+        const result = await cartRepositories.updateQuantitiesProduct({
+            idUser,
+            idProduct,
+            quantity,
+        })
+
+        return res.status(HttpStatusCode.OK).json({
+            data: result,
+            message: 'update thành công ra khỏi giỏ hàng',
+            statusCode: HttpStatusCode.OK,
+        })
+    } catch (error) {
+        return res
+            .status(error.statusCode || HttpStatusCode.INTERNAL_SERVER_ERROR)
+            .json({
+                message: error.message || 'Có lỗi xảy ra',
+                statusCode: error.statusCode,
+            })
+    }
+}
+
 export default {
     getAllBooksInCart,
     addToCart,
-    deleteToCart
+    deleteToCart,
+    updateQuantitiesProduct,
 }

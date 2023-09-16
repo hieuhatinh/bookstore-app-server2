@@ -5,10 +5,13 @@ import HttpStatusCode from '../exception/HttpStatusCode.js'
 /**
  * @description: lấy tất cả sách có trong giỏ hàng của 1 người dùng
  * @method get
- * @route /cart/:idUser
+ * @route /cart/getAllInCarts
  */
 const getAllBooksInCart = async ({ idUser }) => {
-    const cartUser = await CartModel.findOne({ user: idUser })
+    const cartUser = await CartModel.findOne({ user: idUser }).populate(
+        'products.product',
+        'name images price',
+    )
 
     if (!cartUser) {
         throw new ErrorHandler(
@@ -17,17 +20,15 @@ const getAllBooksInCart = async ({ idUser }) => {
         )
     }
 
-    return {
-        result: cartUser,
-    }
+    return cartUser
 }
 
 /**
  * @description: thêm 1 quyển sách vào giỏ hàng của người dùng
  * @method post
- * @route /cart/addToCart/:idUser/:idProduct
+ * @route /cart/addToCart/:idProduct
  */
-const addToCart = async ({ idProduct, idUser, quantity, price, name }) => {
+const addToCart = async ({ idProduct, idUser, quantity }) => {
     const cartUser = await CartModel.findOne({
         user: idUser,
     })
@@ -39,13 +40,11 @@ const addToCart = async ({ idProduct, idUser, quantity, price, name }) => {
                 {
                     product: idProduct,
                     quantityProduct: quantity,
-                    price: price,
-                    name: name,
                 },
             ],
         })
 
-        return { newCart }
+        return newCart
     }
 
     const indexProductItem = cartUser.products.findIndex(
@@ -53,17 +52,18 @@ const addToCart = async ({ idProduct, idUser, quantity, price, name }) => {
     )
 
     if (indexProductItem > -1) {
-        let productItem = cartUser.products[indexProductItem]
-        productItem.quantityProduct = quantity
-        productItem.price = price
-        cartUser.products[indexProductItem] = productItem
+        const newProducts = await CartModel.updateOne(
+            { user: idUser, 'products.product': idProduct },
+            {
+                $inc: {
+                    'products.$.quantityProduct': quantity,
+                },
+            },
+        )
 
-        const result = await cartUser.save()
-
-        return {
-            result
-        }
+        return newProducts
     } else {
+        // return result
         const newProducts = await CartModel.updateOne(
             { user: idUser },
             {
@@ -71,26 +71,23 @@ const addToCart = async ({ idProduct, idUser, quantity, price, name }) => {
                     products: {
                         product: idProduct,
                         quantityProduct: quantity,
-                        price,
-                        name,
                     },
                 },
             },
         )
 
-        return { newProducts }
+        return newProducts
     }
-
 }
 
 /**
  * @description: xóa 1 sách ra khỏi giỏ hàng của người dùng
  * @method delete
- * @route /cart/deleteOne/:idUser/:idProduct
+ * @route /cart/deleteOne/:idProduct
  */
 const deleteToCart = async ({ idUser, idProduct }) => {
     const newProducts = await CartModel.updateOne(
-        { user: idUser },
+        { user: idUser, 'products.product': idProduct },
         {
             $pull: {
                 products: {
@@ -100,11 +97,30 @@ const deleteToCart = async ({ idUser, idProduct }) => {
         },
     )
 
-    return { newProducts }
+    return newProducts
+}
+
+/**
+ * @description: thay đổi số lượng của 1 sản phẩm
+ * @method patch
+ * @route /cart/updateOne/:idProduct
+ */
+const updateQuantitiesProduct = async ({ idUser, idProduct, quantity }) => {
+    const result = await CartModel.updateOne(
+        { user: idUser, 'products.product': idProduct },
+        {
+            $set: {
+                'products.$.quantityProduct': quantity,
+            },
+        },
+    )
+
+    return result
 }
 
 export default {
     getAllBooksInCart,
     addToCart,
     deleteToCart,
+    updateQuantitiesProduct,
 }

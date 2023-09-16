@@ -18,10 +18,10 @@ routerAuth.get(
 )
 
 routerAuth.get(
-    '/google/callback', (req, res, next) => {
+    '/google/callback',
+    (req, res, next) => {
         passport.authenticate('google', function (err, profile) {
-            req.user = profile,
-                next()
+            ;(req.user = profile), next()
         })(req, res, next)
     },
     function (req, res) {
@@ -29,8 +29,6 @@ routerAuth.get(
         res.redirect(`${process.env.URL_CLIENT}/login-success/${req.user?.id}`)
     },
 )
-
-routerAuth.get('', (req, res) => res.json({ message: 'hello' }))
 
 /**
  * @description: đăng nhập
@@ -61,8 +59,8 @@ routerAuth.patch(
 /**
  * @description: lấy thông tin người bán
  * @method get
- * @route /auth/:idSeller
+ * @route /auth/profile
  */
-routerAuth.get('/:idSeller', authController.getProfileSeller)
+routerAuth.get('/profile', checkUserLogin, authController.getProfileUser)
 
 export default routerAuth

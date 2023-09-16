@@ -6,23 +6,21 @@ function checkUserLogin(req, res, next) {
 
     try {
         const tokenVerify = jwt.verify(token, process.env.SECRET_TOKEN)
-
         const isExpired = tokenVerify.exp * 1000 < Date.now()
 
         if (isExpired) {
             return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({
                 message: 'Đã hết phiên đăng nhập',
-                statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR
+                statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
             })
         }
 
         req.data = {
-            ...tokenVerify.data
+            ...tokenVerify,
         }
 
         next()
     } catch (error) {
-        console.log(error)
         return res
             .status(error.statusCode || HttpStatusCode.INTERNAL_SERVER_ERROR)
             .json({

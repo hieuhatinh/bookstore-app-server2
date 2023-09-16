@@ -4,10 +4,10 @@ import { orderRepositories } from '../repositories/index.js'
 /**
  * @description: thêm sách vào hóa đơn
  * @method post
- * @route /order/add/:idUser
+ * @route /order/add
  */
 const addProducts = async (req, res) => {
-    const { idUser } = req.params
+    const idUser = req.data.id
     const {
         products,
         address,
@@ -54,14 +54,11 @@ const addProducts = async (req, res) => {
 /**
  * @description: update thông tin của người dùng (sđt, địa chỉ giao hàng)
  * @method patch
- * @route /order/update/:idUser
+ * @route /order/update
  */
 const updateProfileOrder = async (req, res) => {
-    const { idUser } = req.params
-    const {
-        address,
-        phoneNumber
-    } = req.body
+    const idUser = req.data.id
+    const { address, phoneNumber } = req.body
 
     try {
         const result = await orderRepositories.updateProfileOrder({
@@ -87,5 +84,5 @@ const updateProfileOrder = async (req, res) => {
 
 export default {
     addProducts,
-    updateProfileOrder
+    updateProfileOrder,
 }

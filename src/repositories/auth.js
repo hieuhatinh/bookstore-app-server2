@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 import UserModel from '../Model/User.js'
 import ErrorHandler from '../exception/ErrorHandler.js'
 import HttpStatusCode from '../exception/HttpStatusCode.js'
+import CartModel from '../Model/Cart.js'
 
 /**
  * @description: đăng nhập
@@ -55,12 +56,6 @@ const register = async ({ email, password, phoneNumber }) => {
         $or: [{ email: email }, { phoneNumber: phoneNumber }],
     })
 
-    const user = await UserModel.findOne({
-        $or: [{ email: email }, { phoneNumber: phoneNumber }],
-    })
-
-    console.log(user)
-
     if (exisUser > 0) {
         throw new ErrorHandler(
             'Tài khoản đã tồn tại || số điện thoại đã tồn tại',
@@ -74,8 +69,22 @@ const register = async ({ email, password, phoneNumber }) => {
         phoneNumber,
     })
 
+    await CartModel.create({
+        user: newUser._id,
+        products: [],
+    })
+
+    const token = jwt.sign(
+        { id: newUser._id, email: newUser.email, role: newUser.role },
+        process.env.SECRET_TOKEN,
+        {
+            expiresIn: '24h',
+        },
+    )
+
     return {
         ...newUser._doc,
+        token,
         password: 'Not show',
     }
 }
@@ -85,13 +94,7 @@ const register = async ({ email, password, phoneNumber }) => {
  * @method patch
  * @route /auth/update
  */
-const updateProfile = async ({ userId, fullName, password, avatar }) => {
-    const user = await UserModel.findOne({ _id: userId })
-
-    user.password = password
-
-    user.save()
-
+const updateProfile = async ({ userId, fullName, avatar }) => {
     const result = await UserModel.updateOne(
         {
             _id: userId,
@@ -108,23 +111,20 @@ const updateProfile = async ({ userId, fullName, password, avatar }) => {
 /**
  * @description: lấy thông tin người bán
  * @method get
- * @route /auth/:idSeller
+ * @route /auth/profile
  */
-const getProfileSeller = async ({ idSeller }) => {
-    const sellerProfile = await UserModel.findOne({ _id: idSeller })
+const getProfileUser = async ({ idUser }) => {
+    const userProfile = await UserModel.findOne({ _id: idUser })
 
-    if (
-        !sellerProfile ||
-        sellerProfile.role.trim().toLowerCase() !== 'seller'
-    ) {
+    if (!userProfile) {
         throw new ErrorHandler(
-            'Không tồn tại nhà cung cấp này',
+            'Không tồn tại người dùng này',
             HttpStatusCode.NOT_FOUND,
         )
     }
 
     return {
-        ...sellerProfile._doc,
+        ...userProfile._doc,
         password: 'Not show',
     }
 }
@@ -133,5 +133,5 @@ export default {
     login,
     register,
     updateProfile,
-    getProfileSeller,
+    getProfileUser,
 }

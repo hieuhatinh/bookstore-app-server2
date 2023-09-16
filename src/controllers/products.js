@@ -88,10 +88,10 @@ const getProductsByType = async (req, res) => {
 /**
  * @description: lấy tất cả những quyển sách mà người bán đang bán
  * @method get
- * @route /product/getAllBooksSeller/:idSeller
+ * @route /product/getAllBooksSeller
  */
 const getAllBooksSeller = async (req, res) => {
-    const { idSeller } = req.params
+    const idSeller = req.data.id
     const { _page } = req.query
 
     try {
@@ -127,7 +127,10 @@ const searchBook = async (req, res) => {
     const { searchString, _page } = req.query
 
     try {
-        const searchResult = await productRepositories.searchBook({ searchString, _page })
+        const searchResult = await productRepositories.searchBook({
+            searchString,
+            _page,
+        })
 
         return res.status(HttpStatusCode.OK).json({
             data: searchResult,
@@ -150,10 +153,9 @@ const searchBook = async (req, res) => {
  * @route /product/add
  */
 const bookForSale = async (req, res) => {
-    const { name, price, description, author, category, reviews } =
-        req.body
+    const { name, price, description, author, category, reviews } = req.body
 
-    const seller = req.data._id
+    const seller = req.data.id
     const images = req.files
 
     try {
@@ -227,10 +229,11 @@ const updateProfileProduct = async (req, res) => {
 /**
  * @description: xóa sách, ngừng bán sản phẩm
  * @method delete
- * @route /product/deleteBookSale/:idSeller/:idProduct
+ * @route /product/deleteBookSale/:idProduct
  */
 const deleteBookSale = async (req, res) => {
-    const { idSeller, idProduct } = req.params
+    const { idProduct } = req.params
+    const idSeller = req.data.id
 
     try {
         const bookDelete = await productRepositories.deleteBookSale({

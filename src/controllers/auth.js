@@ -55,15 +55,16 @@ const register = async (req, res) => {
  * @route /auth/update
  */
 const updateProfile = async (req, res) => {
-    const userId = req.data._id
-    const { fullName, password } = req.body
+    const userId = req.data.id
+    const { fullName } = req.body
     const avatar = req.file
+
+    console.log(fullName, avatar)
 
     try {
         const result = await auth.updateProfile({
             userId,
             fullName,
-            password,
             avatar,
         })
 
@@ -83,13 +84,15 @@ const updateProfile = async (req, res) => {
 /**
  * @description: lấy thông tin người bán
  * @method get
- * @route /auth/:idSeller
+ * @route /auth/profile
  */
-const getProfileSeller = async (req, res) => {
-    const { idSeller } = req.params
+const getProfileUser = async (req, res) => {
+    const idUser = req.data.id
+
+    console.log(idUser)
 
     try {
-        const result = await auth.getProfileSeller({ idSeller })
+        const result = await auth.getProfileUser({ idUser })
 
         return res.status(HttpStatusCode.OK).json({
             data: result,
@@ -108,5 +111,5 @@ export default {
     login,
     register,
     updateProfile,
-    getProfileSeller,
+    getProfileUser,
 }

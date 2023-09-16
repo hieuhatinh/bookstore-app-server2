@@ -25,7 +25,7 @@ const getAllBook = async ({ _page }) => {
 const getDetailBook = async ({ idProduct }) => {
     const book = await ProductModel.findOne({
         _id: idProduct,
-    }).exec()
+    }).populate('seller', 'email fullName avatar')
 
     if (!book) {
         throw new ErrorHandler('Không tìm thấy sách', HttpStatusCode.NOT_FOUND)
@@ -37,7 +37,7 @@ const getDetailBook = async ({ idProduct }) => {
 /**
  * @description: lấy tất cả những quyển sách mà người bán đang bán
  * @method get
- * @route /product/getAllBooksSeller/:idSeller
+ * @route /product/getAllBooksSeller
  */
 const getAllBooksSeller = async ({ idSeller, _page }) => {
     _page = parseInt(_page) || 1
@@ -193,7 +193,7 @@ const updateProfileProduct = async ({
 /**
  * @description: xóa sách, ngừng bán sản phẩm
  * @method delete
- * @route /product/deleteBookSale/:idSeller/:idProduct
+ * @route /product/deleteBookSale/:idProduct
  */
 const deleteBookSale = async ({ idSeller, idProduct }) => {
     const book = await ProductModel.find({
